@@ -1,4 +1,38 @@
-eft:0;height:4px;width:0;z-index:900;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));box-shadow:0 0 12px rgba(75,110,255,0.12)}
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>mikennekogenchi — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-top:#020004;     /* almost black */
+  --bg-bottom:#08001a;  /* deep purple */
+  --neon-purple:#a86eff;
+  --neon-blue:#45d1ff;
+  --text:#eae6ff;
+  --muted:rgba(234,230,255,0.68);
+  --glass: rgba(255,255,255,0.02);
+}
+
+/* Reset & base */
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+html,body{height:100%}
+body{
+  font-family:'Poppins',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  background: linear-gradient(180deg, var(--bg-top) 0%, var(--bg-bottom) 100%);
+  color:var(--text);
+  overflow-x:hidden;
+  font-size:15px;
+  line-height:1.6;
+  position:relative;
+}
+
+/* tiny progress bar */
+#progress-bar{position:fixed;top:0;left:0;height:4px;width:0;z-index:900;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));box-shadow:0 0 12px rgba(75,110,255,0.12)}
 
 /* header/hamburger */
 header{position:fixed;top:16px;left:16px;z-index:950}
@@ -210,196 +244,3 @@ footer{
           <div class="project-media"><img src=03.png" loading="lazy" alt="Neon Landing"></div>
           <div class="project-info"><h3>Anime GFX</h3><p>One day with my
           wife.</p></div>
-        </article>
-
-        <article class="project-card" data-title="Anime Portfolio"
-        data-desc="GFX bergaya anime dengan efek dinamis."
-        data-img="02.png?text=Anime+GFX">
-          <div class="project-media"><img src="02.png" loading="lazy" alt="Anime
-          Portfolio"></div>
-          <div class="project-info"><h3>Anime GFX</h3><p>GFX bergaya anime dengan efek visual yang kuat.</p></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section id="contact" aria-label="contact">
-    <div class="section-inner contact-wrap">
-      <h2 class="section-title" data-ref="Contact Me">Contact Me</h2>
-      <div class="underline"></div>
-      <div class="contact-sub" style="color:var(--muted)">Punya proyek atau ingin ngobrol? Kirim pesan singkat — aku akan balas.</div>
-
-      <form class="contact-form" id="contactForm" action="https://formspree.io/f/xeopyljo" method="POST" novalidate>
-        <input type="text" name="name" placeholder="Nama" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <textarea name="message" placeholder="Tulis pesanmu..." required></textarea>
-        <div style="margin-top:8px"><button type="submit" class="btn-send">Send Message</button></div>
-      </form>
-    </div>
-  </section>
-
-</main>
-
-<footer>© <span id="year"></span> mikennekogenchi — "Coding with emotion, glowing in the dark."</footer>
-
-<!-- popup -->
-<div id="msgPopup" aria-live="polite">Pesan Berhasil Dikirim!</div>
-
-<!-- project modal -->
-<div id="projModal" style="display:none;position:fixed;inset:0;z-index:980;align-items:center;justify-content:center;background:rgba(1,2,6,0.75);">
-  <div style="width:92%;max-width:980px;background:linear-gradient(180deg,#050007,#080012);padding:14px;border-radius:12px;border:1px solid rgba(155,77,255,0.06)">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <strong id="modalTitle" style="color:var(--neon-purple)"></strong>
-      <button id="modalClose" style="background:none;border:0;color:var(--muted);cursor:pointer;font-size:18px">✕</button>
-    </div>
-    <img id="modalImg" src="" alt="" style="width:100%;height:420px;object-fit:cover;border-radius:8px;margin-bottom:10px"/>
-    <div id="modalDesc" style="color:var(--muted)"></div>
-  </div>
-</div>
-
-<script>
-/* progress bar */
-const progressBar = document.getElementById('progress-bar');
-window.addEventListener('scroll', () => {
-  const doc = document.documentElement;
-  const pct = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
-  progressBar.style.width = pct + '%';
-});
-
-/* menu toggle */
-const hamburger = document.getElementById('hamburger');
-const menuPanel = document.getElementById('menuPanel');
-hamburger.addEventListener('click', ()=> { hamburger.classList.toggle('active'); menuPanel.classList.toggle('open'); });
-document.querySelectorAll('.menu-panel a').forEach(a => a.addEventListener('click', ()=> { menuPanel.classList.remove('open'); hamburger.classList.remove('active'); }));
-
-/* name typing */
-const nameEl = document.getElementById('nameTyper');
-const nameStr = 'mikennekogenchi';
-let idx = 0;
-(function typeName(){
-  if(idx <= nameStr.length){
-    nameEl.textContent = nameStr.slice(0, idx);
-    idx++;
-    setTimeout(typeName, 80);
-  }
-})();
-
-/* rotating subtitle */
-const roles = ['Frontend Developer','Visual Artist','Dream Coder'];
-let ridx = 0;
-setInterval(()=> {
-  ridx = (ridx + 1) % roles.length;
-  const el = document.getElementById('roleText'); if(el) el.textContent = roles[ridx];
-}, 3000);
-
-/* reveal sections (smooth & slow) */
-const sections = document.querySelectorAll('section');
-const obs = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting) entry.target.classList.add('visible');
-  });
-},{threshold:0.18});
-sections.forEach(s=>obs.observe(s));
-
-/* bubbles canvas - slow & few */
-const canvas = document.getElementById('bubbles');
-if(canvas){
-  const ctx = canvas.getContext && canvas.getContext('2d');
-  let W = innerWidth, H = innerHeight;
-  function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
-  resize(); addEventListener('resize', resize);
-
-  const parts = [];
-  function rand(a,b){ return Math.random()*(b-a)+a; }
-  function spawn(){ parts.push({x:rand(0,W), y:H + 10, r:rand(3,7), vy:rand(0.08,0.3), a:rand(0.02,0.08), col: Math.random()<0.6 ? 'rgba(168,110,255,' : 'rgba(69,209,255,'}); }
-  for(let i=0;i<6;i++) spawn();
-
-  function loop(){
-    if(!ctx) return;
-    ctx.clearRect(0,0,W,H);
-    for(let i=parts.length-1;i>=0;i--){
-      const p = parts[i];
-      p.y -= p.vy;
-      p.r *= 0.999;
-      if(p.y < -12 || p.r < 0.5) parts.splice(i,1);
-      else {
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle = p.col + p.a + ')';
-        ctx.fill();
-      }
-    }
-    if(Math.random() < 0.12) spawn();
-    requestAnimationFrame(loop);
-  }
-  loop();
-}
-
-/* projects modal open */
-const projectsGrid = document.getElementById('projectsGrid');
-const projModal = document.getElementById('projModal');
-const modalTitle = document.getElementById('modalTitle');
-const modalImg = document.getElementById('modalImg');
-const modalDesc = document.getElementById('modalDesc');
-const modalClose = document.getElementById('modalClose');
-
-if(projectsGrid){
-  projectsGrid.addEventListener('click', (e)=>{
-    const card = e.target.closest('.project-card');
-    if(!card) return;
-    modalTitle.textContent = card.dataset.title || '';
-    modalDesc.textContent = card.dataset.desc || '';
-    modalImg.src = card.dataset.img || '';
-    projModal.style.display = 'flex';
-  });
-  modalClose.addEventListener('click', ()=> projModal.style.display='none');
-  projModal.addEventListener('click', (ev)=>{ if(ev.target === projModal) projModal.style.display='none'; });
-}
-
-/* contact form + Formspree + popup */
-const contactForm = document.getElementById('contactForm');
-const msgPopup = document.getElementById('msgPopup');
-
-async function showPopup(){
-  msgPopup.style.opacity = '0';
-  msgPopup.style.transform = 'translateX(-50%) translateY(-16px)';
-  requestAnimationFrame(()=> {
-    msgPopup.style.opacity = '1';
-    msgPopup.style.transform = 'translateX(-50%) translateY(8px)';
-  });
-  setTimeout(()=> {
-    msgPopup.style.opacity = '0';
-    msgPopup.style.transform = 'translateX(-50%) translateY(-16px)';
-  }, 3000);
-}
-
-if(contactForm){
-  contactForm.addEventListener('submit', async (e)=>{
-    e.preventDefault();
-    const formData = new FormData(contactForm);
-    try{
-      const res = await fetch(contactForm.action, {
-        method:'POST',
-        headers:{ 'Accept':'application/json' },
-        body: formData
-      });
-      if(res.ok){
-        contactForm.reset();
-        showPopup();
-      } else {
-        showPopup();
-        console.warn('Formspree returned non-ok', res.status);
-      }
-    } catch(err){
-      console.error('Network error, fallback submit', err);
-      contactForm.submit();
-    }
-  });
-}
-
-/* year */
-const yearEl = document.getElementById('year');
-if(yearEl) yearEl.textContent = new Date().getFullYear();
-</script>
-</body>
-</html>
