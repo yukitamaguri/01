@@ -436,16 +436,16 @@ ${escapeMarkdown(message)}
           body: JSON.stringify({ chat_id: CHAT_ID, text: payloadText, parse_mode: 'Markdown' })
         });
         if(res.ok){
-          showToast('✅ Pesan berhasil dikirim!');
+          showToast(' Pesan berhasil dikirim!');
           form.reset();
           if(statusDiv){ statusDiv.style.display='none'; }
         } else {
-          showToast('❌ Gagal mengirim pesan.', 'rgba(255,123,123,0.95)');
+          showToast(' Gagal mengirim pesan.', 'rgba(255,123,123,0.95)');
           if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Gagal mengirim pesan.'; }
           console.warn('Telegram send failed:', await res.text());
         }
       }catch(err){
-        showToast('⚠️ Terjadi kesalahan koneksi.', 'rgba(255,174,123,0.95)');
+        showToast(' Terjadi kesalahan koneksi.', 'rgba(255,174,123,0.95)');
         if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Kesalahan koneksi.'; }
         console.error(err);
       }
