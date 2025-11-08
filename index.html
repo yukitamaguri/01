@@ -7,25 +7,57 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg-top:#010006;
-  --bg-bottom:#0b0020;
+  --bg-dark:#050011;
   --neon-purple:#a86eff;
   --neon-blue:#45d1ff;
   --text:#eae6ff;
   --muted:rgba(234,230,255,0.68);
 }
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+html,body{height:100%}
 body{
   font-family:'Poppins',sans-serif;
   color:var(--text);
-  background:linear-gradient(180deg,var(--bg-top),var(--bg-bottom));
+  background:radial-gradient(circle at top left,#090014 0%,#050011 50%,#0b0020 100%);
+  background-attachment:fixed;
   overflow-x:hidden;
+  position:relative;
 }
 
-/* Header & Menu */
+/* --- Canvas (bubbles) */
+#bubbles{
+  position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+}
+
+/* --- Toast notification (center top) --- */
+.toast {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-40px);
+  background: rgba(20, 0, 40, 0.85);
+  color: #fff;
+  padding: 10px 22px;
+  border-radius: 8px;
+  border: 1px solid rgba(155, 77, 255, 0.5);
+  box-shadow: 0 0 18px rgba(155, 77, 255, 0.4);
+  font-size: 14px;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(.2,.9,.2,1);
+  z-index: 5000;
+  pointer-events: none;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* content layering */
+main, header, footer, .menu-panel{position:relative;z-index:1}
+
+/* header & hamburger */
 header{position:fixed;top:16px;left:16px;z-index:1000}
-.hamburger{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;
-background:rgba(155,77,255,0.04);cursor:pointer;border:1px solid rgba(155,77,255,0.06);}
+.hamburger{width:44px;height:44px;border-radius:10px;display:grid;place-items:center;background:rgba(155,77,255,0.04);cursor:pointer;border:1px solid rgba(155,77,255,0.06)}
 .lines{position:relative;width:22px;height:14px}
 .lines span{position:absolute;height:2px;width:100%;border-radius:2px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));transition:all .35s}
 .lines span:nth-child(1){top:0}
@@ -34,161 +66,75 @@ background:rgba(155,77,255,0.04);cursor:pointer;border:1px solid rgba(155,77,255
 .hamburger.active .lines span:nth-child(1){transform:rotate(45deg);top:6px}
 .hamburger.active .lines span:nth-child(2){opacity:0}
 .hamburger.active .lines span:nth-child(3){transform:rotate(-45deg);bottom:6px}
-.menu-panel{
-  position:fixed;top:0;right:0;bottom:0;width:260px;background:rgba(10,0,20,0.94);
-  backdrop-filter:blur(8px);transform:translateX(120%);transition:transform .4s;
-  padding:100px 22px;z-index:999;border-left:1px solid rgba(155,77,255,0.05);
-}
+
+/* side menu panel */
+.menu-panel{position:fixed;top:0;right:0;bottom:0;width:260px;background:rgba(10,0,20,0.94);backdrop-filter:blur(8px);transform:translateX(120%);transition:transform .35s;padding:100px 22px;z-index:999;border-left:1px solid rgba(155,77,255,0.05)}
 .menu-panel.open{transform:translateX(0)}
 .menu-panel a{display:block;color:var(--text);text-decoration:none;padding:14px 12px;margin-bottom:8px;border-radius:8px}
 .menu-panel a:hover{color:var(--neon-blue);background:rgba(155,77,255,0.05)}
 
-/* Animasi scroll */
+/* sections - transparent so background is continuous */
 section,footer{
-  min-height:100vh;display:flex;align-items:center;justify-content:center;
-  padding:48px 20px;opacity:0;transform:translateY(80px);
-  transition:opacity 2.9s cubic-bezier(.25,.1,.25,1),transform 2.9s cubic-bezier(.25,.1,.25,1);
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px;background:none;border:none;
+  opacity:0;transform:translateY(80px);transition:opacity 1.1s ease, transform 1.1s ease;
 }
 section.in,footer.in{opacity:1;transform:translateY(0)}
-section.out,footer.out{opacity:0;transform:translateY(80px)}
 .section-inner{text-align:center;max-width:900px;margin:auto}
 
-/* Judul Section + Garis Neon 2 Lapis */
-.section-title{
-  font-size:30px;color:var(--neon-purple);margin-bottom:24px;position:relative;font-weight:600;display:inline-block;
-}
-.section-title::before,
-.section-title::after{
-  content:"";position:absolute;left:50%;transform:translateX(-50%);
-  height:3px;border-radius:4px;
-  background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));
-}
-.section-title::before{
-  bottom:-8px;width:120px;box-shadow:0 0 20px rgba(155,77,255,0.5);
-}
-.section-title::after{
-  bottom:-14px;width:200px;opacity:.3;filter:blur(6px);
-}
+/* titles */
+.section-title{font-size:28px;color:var(--neon-purple);margin-bottom:18px;position:relative;font-weight:600;display:inline-block}
+.section-title::before,.section-title::after{content:"";position:absolute;left:50%;transform:translateX(-50%);height:3px;border-radius:4px;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue))}
+.section-title::before{bottom:-8px;width:120px;box-shadow:0 0 20px rgba(155,77,255,0.5)}
+.section-title::after{bottom:-14px;width:200px;opacity:.25;filter:blur(6px)}
 
-/* Hero */
-.hero-ui{width:400px;max-width:95%;padding:28px;border-radius:16px;background:rgba(255,255,255,0.02);
-border:1px solid rgba(155,77,255,0.05);backdrop-filter:blur(6px);}
-.avatar{width:120px;height:120px;border-radius:999px;margin:0 auto 14px;overflow:hidden;border:2px solid rgba(155,77,255,0.4)}
+/* hero */
+.hero-ui{width:400px;max-width:95%;padding:24px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(155,77,255,0.05);backdrop-filter:blur(6px)}
+.avatar{width:110px;height:110px;border-radius:999px;margin:0 auto 12px;overflow:hidden;border:2px solid rgba(155,77,255,0.35)}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.name-typer{font-size:26px;color:var(--neon-purple);white-space:nowrap;overflow:hidden;border-right:2px solid rgba(155,77,255,0.85);padding-right:6px}
-.subtitle{color:var(--muted);margin-top:8px;font-size:14px}
-.contact-row{display:flex;flex-direction:column;gap:10px;margin-top:14px;align-items:center}
-.contact-box{width:260px;background:rgba(255,255,255,0.02);border-radius:12px;padding:10px 14px;border:1px solid rgba(155,77,255,0.05)}
-.contact-box a{color:var(--neon-blue);text-decoration:none}
+.name-typer{font-size:22px;color:var(--neon-purple);white-space:nowrap;overflow:hidden;border-right:2px solid rgba(155,77,255,0.85);padding-right:6px}
+.subtitle{color:var(--muted);margin-top:8px;font-size:13px}
 
-/* Skill - Kotak Futuristik */
-.skill-chips{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:14px;
-  margin-top:20px;
-}
-.skill-chip{
-  display:inline-block;
-  width:260px;
-  padding:14px 0;
-  border-radius:14px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(155,77,255,0.15);
-  color:var(--text);
-  font-weight:500;
-  letter-spacing:.6px;
-  box-shadow:0 0 16px rgba(168,110,255,0.1);
-  opacity:0;
-  transform:translateY(40px);
-  transition:all 1.2s cubic-bezier(.25,.1,.25,1);
-}
-.skill-chip.show{
-  opacity:1;
-  transform:translateY(0);
-}
-.skill-chip:hover{
-  box-shadow:0 0 28px rgba(155,77,255,0.6);
-  border-color:rgba(69,209,255,0.25);
-  transform:scale(1.05);
-}
+/* === SKILL (from 00.html) === */
+.skill{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:20px;margin-top:30px}
+.ui-skill{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+.skill-box{min-width:120px;padding:14px 26px;background:rgba(255,255,255,0.04);border:1px solid rgba(155,77,255,0.15);border-radius:10px;box-shadow:inset 0 0 12px rgba(155,77,255,0.1),0 0 15px rgba(155,77,255,0.08);color:var(--text);font-weight:500;letter-spacing:0.5px;text-align:center;opacity:0;transform:translateY(25px);transition:all 1s cubic-bezier(.23,1,.32,1)}
+.skill-box.show{opacity:1;transform:translateY(0)}
+.skill-box:hover{background:rgba(155,77,255,0.1);border-color:rgba(155,77,255,0.4);box-shadow:0 0 20px rgba(155,77,255,0.25)}
 
-/* Projects (diperkecil) */
-.projects-grid {
-  display: grid;
-  gap: 24px;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-}
+/* projects */
+.projects-grid{display:grid;gap:18px;grid-template-columns:1fr 1fr;justify-items:center}
+.project-card{background:rgba(255,255,255,0.03);border-radius:10px;border:1px solid rgba(155,77,255,0.08);overflow:hidden;width:90%;max-width:420px;cursor:pointer;transition:transform .35s}
+.project-card:hover{transform:translateY(-8px) scale(1.01)}
+.project-media{height:180px;overflow:hidden}
+.project-media img{width:100%;height:100%;object-fit:cover}
 
-.project-card {
-  background: rgba(255, 255, 255, 0.03);
-  border-radius: 10px;
-  border: 1px solid rgba(155, 77, 255, 0.1);
-  transition: 0.5s;
-  overflow: hidden;
-  width: 90%;
-  max-width: 420px;
-}
+/* popup */
+.popup{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.99);backdrop-filter:blur(8px);justify-content:center;align-items:center;z-index:2000}
+.popup-content{position:relative;max-width:92%;background:rgba(255,255,255,0.05);border-radius:12px;padding:18px;border:1px
+solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
+.popup-content img{max-width:100%;border-radius:10px;margin-bottom:12px}
+.close-btn{position:absolute;top:8px;right:12px;font-size:24px;color:var(--neon-purple);cursor:pointer}
 
-.project-card:hover {
-  transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 45px rgba(69, 209, 255, 0.15);
-}
+/* contact */
+.contact-form{width:100%;max-width:560px;background:rgba(0,0,0,0.14);padding:18px;border-radius:10px;border:1px solid rgba(155,77,255,0.05)}
+.contact-form input,.contact-form textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(155,77,255,0.08);background:rgba(255,255,255,0.01);color:var(--text);margin-bottom:10px}
+.btn-send{padding:10px 16px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));color:#fff;cursor:pointer}
+#formStatus{margin-top:12px;color:var(--muted);display:none}
 
-.project-media {
-  height: 220px;
-  overflow: hidden;
-}
-
-.project-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.8s;
-}
-
-.project-card:hover .project-media img {
-  transform: scale(1.05);
-}
-
-.project-info {
-  padding: 14px;
-}
-
-.project-info h3 {
-  color: var(--neon-purple);
-  margin-bottom: 6px;
-  font-size: 18px;
-}
-
-.project-info p {
-  font-size: 14px;
-  color: var(--muted);
-}
-
-/* Contact */
-.contact-form{width:100%;max-width:560px;background:rgba(0,0,0,0.14);padding:22px;border-radius:12px;border:1px solid rgba(155,77,255,0.05)}
-.contact-form input,.contact-form textarea{width:100%;padding:12px;border-radius:10px;border:1px solid rgba(155,77,255,0.12);background:rgba(255,255,255,0.01);color:var(--text);margin-bottom:12px}
-.btn-send{padding:12px 20px;border-radius:10px;border:none;background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));color:#fff;cursor:pointer}
-
-#msgPopup{
-  position:fixed;left:50%;top:14px;transform:translateX(-50%) translateY(-14px);
-  background:linear-gradient(90deg,rgba(168,110,255,0.95),rgba(69,209,255,0.9));color:#fff;
-  padding:10px 16px;border-radius:10px;opacity:0;z-index:999;transition:.35s ease;
-}
-
-@media(max-width:980px){
-  .projects-grid{grid-template-columns:1fr}
-  .project-card{width:95%}
-}
+/* responsive */
+@media(max-width:980px){.projects-grid{grid-template-columns:1fr}.hero-ui{width:92%}}
 </style>
 </head>
 <body>
+
+<!-- canvas bubbles + toast -->
+<canvas id="bubbles"></canvas>
+<div id="toast" class="toast" aria-hidden="true"></div>
+
 <header>
-  <div class="hamburger" id="hamburger"><div class="lines"><span></span><span></span><span></span></div></div>
+  <div class="hamburger" id="hamburger" aria-label="menu" role="button"><div class="lines"><span></span><span></span><span></span></div></div>
 </header>
+
 <aside class="menu-panel" id="menuPanel">
   <a href="#home">Home</a>
   <a href="#about">About</a>
@@ -200,71 +146,320 @@ border:1px solid rgba(155,77,255,0.05);backdrop-filter:blur(6px);}
 <main>
   <section id="home"><div class="section-inner">
     <div class="hero-ui">
-      <div class="avatar"><img src="01.png"></div>
-      <div class="name-typer" id="nameTyper"></div>
+      <div class="avatar"><img src="01.png" alt="profile"></div>
+      <div class="name-typer" id="nameTyper" aria-hidden="false"></div>
       <div class="subtitle">Frontend Developer</div>
-      <div class="contact-row">
-        <div class="contact-box">📞 <a href="tel:+6283865068334">+62 838-6506-8334</a></div>
-        <div class="contact-box">📧 <a href="mailto:mikennekogc@gmail.com">mikennekogc@gmail.com</a></div>
+      <div style="margin-top:12px">
+        <div style="margin-bottom:8px">📞 <a href="https://wa.me/6283865068331" style="color:var(--neon-blue)">+62 838-6506-8334</a></div>
+        <div>📧 <a href="mailto:mikennekogc@gmail.com" style="color:var(--neon-blue)">mikennekogc@gmail.com</a></div>
       </div>
     </div>
   </div></section>
 
   <section id="about"><div class="section-inner">
-    <h2 class="section-title" data-ref="About">About</h2>
-    <p>saya hanyalah seorang wibu biasa yang sedang mengharapkan keajaiban di hidup
-    saya.</p>
+    <h2 class="section-title">About</h2>
+    <p style="max-width:700px;margin:auto;color:var(--muted)">
+      saya hanyalah wibu biasa yang sedang mengharapkan keajaiban di dalam hidup saya.
+    </p>
   </div></section>
 
-  <section id="skill"><div class="section-inner">
-    <h2 class="section-title" data-ref="Skill">Skill</h2>
-    <p>Keahlian inti saya dalam bidang teknologi dan seni digital:</p>
-    <div class="skill-chips">
-      <div class="skill-chip">HTML</div>
-      <div class="skill-chip">CSS</div>
-      <div class="skill-chip">Alight motion</div>
-      <div class="skill-chip">React</div>
-      <div class="skill-chip">UI/3D Design</div>
-      <div class="skill-chip">Animating</div>
+  <!-- SKILL (dari 00.html) -->
+  <section id="skill">
+    <div class="section-inner">
+      <h2 class="section-title">Skill</h2>
+      <p style="max-width:700px;margin:auto;color:var(--muted)">Keahlian inti
+      saya dalam bidang teknologi dan seni digital: </p>
+      <div class="skill">
+        <div class="ui-skill">
+          <div class="skill-box">HTML</div>
+          <div class="skill-box">CSS</div>
+          <div class="skill-box">Alight motion</div>
+          <div class="skill-box">React</div>
+          <div class="skill-box">UI / 3D design</div>
+        </div>
+      </div>
     </div>
-  </div></section>
+  </section>
 
   <section id="projects"><div class="section-inner">
-    <h2 class="section-title" data-ref="Projects">Projects</h2>
+    <h2 class="section-title">Projects</h2>
     <div class="projects-grid">
-      <div class="project-card"><div class="project-media"><img src="02.png"></div><div class="project-info"><h3>Anime GFX</h3><p>GFX bergaya anime dengan efek visual yang kuat.</p></div></div>
-      <div class="project-card"><div class="project-media"><img src="03.png"></div><div class="project-info"><h3>My Wife</h3><p>One day with my wife.</p></div></div>
+      <div class="project-card" data-title="Anime GFX" data-desc="GFX bergaya anime dengan efek visual yang kuat." data-img="02.png">
+        <div class="project-media"><img src="02.png" alt="Anime GFX"></div>
+        <div class="project-info"><h3>Anime GFX</h3><p>GFX bergaya anime dengan efek visual yang kuat.</p></div>
+      </div>
+      <div class="project-card" data-title="My Wife" data-desc="One day with my wife." data-img="03.png">
+        <div class="project-media"><img src="03.png" alt="My Wife"></div>
+        <div class="project-info"><h3>My Wife</h3><p>One day with my wife.</p></div>
+      </div>
     </div>
   </div></section>
 
   <section id="contact"><div class="section-inner">
-    <h2 class="section-title" data-ref="Contact">Contact Me</h2>
-    <form class="contact-form" id="contactForm" action="https://formspree.io/f/xeopyljo" method="POST">
-      <input type="text" name="name" placeholder="Nama" required>
-      <input type="email" name="email" placeholder="Email" required>
-      <textarea name="message" placeholder="Pesan..." required></textarea>
-      <button class="btn-send">Kirim</button>
+    <h2 class="section-title">Contact Me</h2>
+    <form class="contact-form" id="telegramForm" autocomplete="off">
+      <input type="text" id="name" name="name" placeholder="Nama" required>
+      <input type="email" id="email" name="email" placeholder="Email" required>
+      <textarea id="message" name="message" placeholder="Pesan..." required></textarea>
+      <button class="btn-send" type="submit">Kirim</button>
     </form>
+    <div id="formStatus" aria-live="polite"></div>
   </div></section>
 </main>
 
-<footer><div class="section-inner">© <span id="year"></span> mikennekogenchi — Just someone who's bored.</div></footer>
-<div id="msgPopup">Pesan berhasil dikirim!</div>
+<footer><div class="section-inner">© <span id="year"></span> Mikennekogenchi — glowing in the dark</div></footer>
+
+<!-- project popup -->
+<div id="projectPopup" class="popup" aria-hidden="true">
+  <div class="popup-content" role="dialog" aria-modal="true">
+    <span class="close-btn" aria-label="close">&times;</span>
+    <img id="popupImage" src="" alt="">
+    <h3 id="popupTitle"></h3>
+    <p id="popupDesc"></p>
+  </div>
+</div>
 
 <script>
-const h=document.getElementById('hamburger'),m=document.getElementById('menuPanel');
-h.onclick=()=>{h.classList.toggle('active');m.classList.toggle('open');};
-document.querySelectorAll('.menu-panel a').forEach(a=>a.onclick=()=>{h.classList.remove('active');m.classList.remove('open');});
-const n=document.getElementById('nameTyper'),txt='mikennekogenchi';let i=0;(function type(){if(i<=txt.length){n.textContent=txt.slice(0,i++);setTimeout(type,90);}})();
-const sections=document.querySelectorAll('section,footer');
-function animScroll(){sections.forEach(s=>{const r=s.getBoundingClientRect();const v=r.top<innerHeight&&r.bottom>0;if(v){s.classList.add('in');s.classList.remove('out');}else{s.classList.add('out');s.classList.remove('in');}});}
-addEventListener('scroll',animScroll);addEventListener('resize',animScroll);animScroll();
-const chips=document.querySelectorAll('.skill-chip');
-function showChips(){chips.forEach((c,idx)=>{setTimeout(()=>c.classList.add('show'),idx*200);});}
-window.addEventListener('scroll',()=>{const r=document.getElementById('skill').getBoundingClientRect();if(r.top<innerHeight*0.8){showChips();}});
-const f=document.getElementById('contactForm'),msg=document.getElementById('msgPopup');
-f.addEventListener('submit',async e=>{e.preventDefault();const fd=new FormData(f);await fetch(f.action,{method:'POST',headers:{Accept:'application/json'},body:fd});f.reset();msg.style.opacity='1';setTimeout(()=>msg.style.opacity='0',3000);});
-document.getElementById('year').textContent=new Date().getFullYear();
+document.addEventListener('DOMContentLoaded', function(){
+
+  /* ---------------------------
+     BUBBLES (from 00.html) with 2% spawn chance per frame
+     --------------------------- */
+  (function(){
+    const canvas = document.getElementById('bubbles');
+    if(!canvas) return;
+    const ctx = canvas.getContext && canvas.getContext('2d');
+    if(!ctx) return;
+
+    let W = canvas.width = window.innerWidth;
+    let H = canvas.height = window.innerHeight;
+    function onResize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+    window.addEventListener('resize', onResize);
+
+    function rand(min,max){ return Math.random()*(max-min)+min; }
+
+    function createBubble(){
+      return {
+        x: rand(0,W),
+        y: H + 10,
+        radius: rand(2,6),
+        speed: rand(0.3,1),
+        alpha: rand(0.05,0.15),
+        drift: rand(-0.2,0.2)
+      };
+    }
+
+    const bubbles = [];
+    for(let i=0;i<20;i++) bubbles.push(createBubble());
+
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      for(let i=bubbles.length-1;i>=0;i--){
+        const b = bubbles[i];
+        b.y -= b.speed;
+        b.x += b.drift;
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,b.radius,0,Math.PI*2);
+        ctx.fillStyle = `rgba(155,77,255,${b.alpha})`;
+        ctx.fill();
+        if(b.y + b.radius < 0){
+          bubbles.splice(i,1);
+          bubbles.push(createBubble());
+        }
+      }
+      // 2% spawn chance per frame
+      if(Math.random() < 0.02){
+        bubbles.push(createBubble());
+      }
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+  })();
+
+
+  /* ---------------------------
+     MENU TOGGLE (safe)
+     --------------------------- */
+  (function(){
+    const hamburger = document.getElementById('hamburger');
+    const menuPanel = document.getElementById('menuPanel');
+    if(hamburger){
+      hamburger.addEventListener('click', function(){
+        hamburger.classList.toggle('active');
+        if(menuPanel) menuPanel.classList.toggle('open');
+      });
+    }
+    if(menuPanel){
+      menuPanel.querySelectorAll('a').forEach(a => a.addEventListener('click', function(){
+        if(hamburger) hamburger.classList.remove('active');
+        menuPanel.classList.remove('open');
+      }));
+    }
+  })();
+
+  /* ---------------------------
+     TYPING NAME
+     --------------------------- */
+  (function(){
+    const nameEl = document.getElementById('nameTyper');
+    if(!nameEl) return;
+    const text = 'Mikennekogenchi';
+    let idx = 0;
+    (function type(){
+      if(idx <= text.length){
+        nameEl.textContent = text.slice(0, idx++);
+        setTimeout(type, 90);
+      }
+    })();
+  })();
+
+  /* ---------------------------
+     SCROLL REVEAL (sections)
+     --------------------------- */
+  (function(){
+    const nodes = Array.from(document.querySelectorAll('section, footer'));
+    function reveal(){
+      const vh = window.innerHeight || document.documentElement.clientHeight;
+      nodes.forEach(s=>{
+        try{
+          const r = s.getBoundingClientRect();
+          if(r.top < vh*0.85 && r.bottom > 0) s.classList.add('in'); else s.classList.remove('in');
+        }catch(e){}
+      });
+    }
+    window.addEventListener('scroll', reveal, {passive:true});
+    window.addEventListener('resize', reveal);
+    setTimeout(reveal,120);
+  })();
+
+  /* ---------------------------
+     SKILL animation (from 00.html)
+     --------------------------- */
+  (function(){
+    const skillBoxes = Array.from(document.querySelectorAll('.skill-box'));
+    if(skillBoxes.length === 0) return;
+    function showSkillOnce(){
+      const sec = document.getElementById('skill');
+      if(!sec) return;
+      const rect = sec.getBoundingClientRect();
+      if(rect.top < window.innerHeight * 0.85){
+        skillBoxes.forEach((b,i)=> setTimeout(()=> b.classList.add('show'), i*150));
+        window.removeEventListener('scroll', showSkillOnce);
+      }
+    }
+    window.addEventListener('scroll', showSkillOnce, {passive:true});
+    setTimeout(showSkillOnce, 300);
+  })();
+
+  /* ---------------------------
+     PROJECT POPUP
+     --------------------------- */
+  (function(){
+    const popup = document.getElementById('projectPopup');
+    if(!popup) return;
+    const popupImg = document.getElementById('popupImage');
+    const popupTitle = document.getElementById('popupTitle');
+    const popupDesc = document.getElementById('popupDesc');
+    const closeBtn = popup.querySelector('.close-btn');
+
+    function openPopup(img,title,desc){
+      if(popupImg) popupImg.src = img || '';
+      if(popupTitle) popupTitle.textContent = title || '';
+      if(popupDesc) popupDesc.textContent = desc || '';
+      popup.style.display = 'flex';
+      popup.setAttribute('aria-hidden','false');
+    }
+    function closePopup(){ popup.style.display = 'none'; popup.setAttribute('aria-hidden','true'); }
+
+    document.querySelectorAll('.project-card').forEach(card=>{
+      card.addEventListener('click', ()=>{
+        const img = card.getAttribute('data-img') || (card.querySelector('img') && card.querySelector('img').src) || '';
+        const title = card.getAttribute('data-title') || (card.querySelector('h3') && card.querySelector('h3').textContent) || '';
+        const desc = card.getAttribute('data-desc') || (card.querySelector('p') && card.querySelector('p').textContent) || '';
+        openPopup(img,title,desc);
+      });
+    });
+
+    if(closeBtn) closeBtn.addEventListener('click', closePopup);
+    window.addEventListener('click', function(e){ if(e.target === popup) closePopup(); });
+    window.addEventListener('keydown', function(e){ if(e.key === 'Escape') closePopup(); });
+  })();
+
+  /* ---------------------------
+     TELEGRAM CONTACT + TOAST
+     --------------------------- */
+  (function(){
+    const form = document.getElementById('telegramForm');
+    const statusDiv = document.getElementById('formStatus');
+    const toast = document.getElementById('toast');
+    if(!form) return;
+
+    function showToast(msg, color='rgba(124,255,193,0.9)'){
+      if(!toast) return;
+      toast.textContent = msg;
+      toast.style.borderColor = color;
+      toast.classList.add('show');
+      toast.setAttribute('aria-hidden','false');
+      setTimeout(()=>{ toast.classList.remove('show'); toast.setAttribute('aria-hidden','true'); }, 3000);
+    }
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      const name = (document.getElementById('name')||{}).value || '';
+      const email = (document.getElementById('email')||{}).value || '';
+      const message = (document.getElementById('message')||{}).value || '';
+
+      const TOKEN = '8565552587:AAFSJysYHitKWugVSHgcu1tymRF1pOSMEQg'; // <-- GANTI dengan token bot kamu
+      const CHAT_ID = '8012228867'; // <-- GANTI dengan chat_id kamu
+
+      if(!TOKEN || !CHAT_ID){
+        showToast('⚠️ Token/chat_id belum diset.', 'rgba(255,174,123,0.95)');
+        return;
+      }
+
+      const payloadText =
+`💬 *Pesan Baru dari Portofolio*\n\n========================
+${escapeMarkdown(name)}
+========================
+${escapeMarkdown(email)}
+========================
+${escapeMarkdown(message)}
+========================`;
+
+      // show sending toast
+      showToast('Mengirim pesan...', 'rgba(168,110,255,0.95)');
+
+      try{
+        const res = await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text: payloadText, parse_mode: 'Markdown' })
+        });
+        if(res.ok){
+          showToast('✅ Pesan berhasil dikirim!');
+          form.reset();
+          if(statusDiv){ statusDiv.style.display='none'; }
+        } else {
+          showToast('❌ Gagal mengirim pesan.', 'rgba(255,123,123,0.95)');
+          if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Gagal mengirim pesan.'; }
+          console.warn('Telegram send failed:', await res.text());
+        }
+      }catch(err){
+        showToast('⚠️ Terjadi kesalahan koneksi.', 'rgba(255,174,123,0.95)');
+        if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Kesalahan koneksi.'; }
+        console.error(err);
+      }
+    });
+
+    function escapeMarkdown(s){ if(!s) return ''; return String(s).replace(/([_*[\]()~`>#+=|{}.!-])/g,'\\$1'); }
+  })();
+
+  /* ---------------------------
+     Footer year
+     --------------------------- */
+  (function(){ const y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear(); })();
+
+}); // DOMContentLoaded
 </script>
 </body>
-</html>
+  </html>
