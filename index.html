@@ -76,7 +76,8 @@ header{position:fixed;top:16px;left:16px;z-index:1000}
 /* sections - transparent so background is continuous */
 section,footer{
   min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 20px;background:none;border:none;
-  opacity:0;transform:translateY(80px);transition:opacity 1.1s ease, transform 1.1s ease;
+  opacity:0;transform:translateY(40px);transition:opacity 0.9s ease-out,
+  transform 0.9s ease-out;
 }
 section.in,footer.in{opacity:1;transform:translateY(0)}
 .section-inner{text-align:center;max-width:900px;margin:auto}
@@ -268,7 +269,7 @@ document.addEventListener('DOMContentLoaded', function(){
         }
       }
       // 2% spawn chance per frame
-      if(Math.random() < 0.02){
+      if(Math.random() < 0.01){
         bubbles.push(createBubble());
       }
       requestAnimationFrame(draw);
@@ -400,7 +401,8 @@ document.addEventListener('DOMContentLoaded', function(){
       toast.style.borderColor = color;
       toast.classList.add('show');
       toast.setAttribute('aria-hidden','false');
-      setTimeout(()=>{ toast.classList.remove('show'); toast.setAttribute('aria-hidden','true'); }, 3000);
+      setTimeout(()=>{ toast.classList.remove('show');
+      toast.setAttribute('aria-hidden','true'); }, 3000);
     }
 
     form.addEventListener('submit', async function(e){
@@ -436,16 +438,16 @@ ${escapeMarkdown(message)}
           body: JSON.stringify({ chat_id: CHAT_ID, text: payloadText, parse_mode: 'Markdown' })
         });
         if(res.ok){
-          showToast(' Pesan berhasil dikirim!');
+          showToast('✅ Pesan berhasil dikirim!');
           form.reset();
           if(statusDiv){ statusDiv.style.display='none'; }
         } else {
-          showToast(' Gagal mengirim pesan.', 'rgba(255,123,123,0.95)');
+          showToast('❌ Gagal mengirim pesan.', 'rgba(255,123,123,0.95)');
           if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Gagal mengirim pesan.'; }
           console.warn('Telegram send failed:', await res.text());
         }
       }catch(err){
-        showToast(' Terjadi kesalahan koneksi.', 'rgba(255,174,123,0.95)');
+        showToast('⚠️ Terjadi kesalahan koneksi.', 'rgba(255,174,123,0.95)');
         if(statusDiv){ statusDiv.style.display='block'; statusDiv.textContent='Kesalahan koneksi.'; }
         console.error(err);
       }
@@ -462,4 +464,4 @@ ${escapeMarkdown(message)}
 }); // DOMContentLoaded
 </script>
 </body>
-  </html>
+      </html>
