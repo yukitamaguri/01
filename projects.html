@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Project — Mikennekogenchi</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg-dark:#050011;
+  --neon-purple:#a86eff;
+  --neon-blue:#45d1ff;
+  --text:#eae6ff;
+  --muted:rgba(234,230,255,0.68);
+}
+*{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
+html,body{height:100%}
+body{
+  font-family:'Poppins',sans-serif;
+  color:var(--text);
+  background:radial-gradient(circle at top left,#090014 0%,#050011 50%,#0b0020 100%);
+  background-attachment:fixed;
+  overflow-x:hidden;
+  position:relative;
+  opacity:0;
+  transition:opacity .6s ease-in-out;
+}
+body.show{opacity:1}
+
+/* --- SECTION --- */
+section{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:100px 20px;
+}
+.section-inner{text-align:center;max-width:950px;margin:auto}
+
+/* --- TITLE --- */
+.section-title{
+  font-size:32px;
+  color:var(--neon-purple);
+  margin-bottom:24px;
+  position:relative;
+  font-weight:600;
+  display:inline-block;
+  text-shadow:0 0 12px rgba(155,77,255,0.6);
+}
+.section-title::before,
+.section-title::after{
+  content:"";
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  height:3px;
+  border-radius:4px;
+  background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));
+}
+.section-title::before{bottom:-8px;width:120px;box-shadow:0 0 20px rgba(155,77,255,0.5);}
+.section-title::after{bottom:-14px;width:200px;opacity:.25;filter:blur(6px);}
+
+/* --- PROJECT CARDS --- */
+.projects-grid{
+  display:grid;
+  gap:24px;
+  grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+  justify-items:center;
+  margin-top:20px;
+}
+.project-card{
+  background:rgba(255,255,255,0.03);
+  border-radius:14px;
+  border:1px solid rgba(155,77,255,0.08);
+  overflow:hidden;
+  max-width:420px;
+  transition:transform .35s ease, box-shadow .35s ease, opacity 0.8s ease, transform 0.8s ease;
+  cursor:pointer;
+  backdrop-filter:blur(6px);
+  opacity:0;
+  transform:translateY(30px);
+}
+.project-card.visible{opacity:1;transform:translateY(0);}
+.project-card:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 0 30px rgba(155,77,255,0.25);
+}
+.project-media{height:200px;overflow:hidden;}
+.project-media img{width:100%;height:100%;object-fit:cover;}
+.project-info{
+  padding:18px;
+  text-align:center;
+}
+.project-info h3{
+  color:var(--text);
+  margin-bottom:6px;
+  font-size:18px;
+  font-weight:600;
+  text-shadow:0 0 8px rgba(155,77,255,0.6);
+}
+.project-info p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.6;
+  font-weight:600;
+}
+
+/* --- POPUP --- */
+.popup{
+  display:none;
+  position:fixed;
+  top:0;left:0;width:100%;height:100%;
+  background:rgba(0,0,0,0.96);
+  backdrop-filter:blur(10px);
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+  opacity:0;
+  transition:opacity 0.3s ease;
+}
+.popup.show{display:flex;opacity:1;}
+.popup-content{
+  position:relative;
+  max-width:90%;
+  background:rgba(255,255,255,0.05);
+  border-radius:12px;
+  padding:20px;
+  border:1px solid rgba(155,77,255,0.2);
+  box-shadow:0 0 24px rgba(155,77,255,0.3);
+  color:var(--text);
+  text-align:center;
+  transform:scale(0.9);
+  transition:transform 0.3s ease;
+}
+.popup.show .popup-content{transform:scale(1);}
+.popup-content img{
+  max-width:100%;
+  border-radius:10px;
+  margin-bottom:12px;
+}
+.close-btn{
+  position:absolute;
+  top:8px;
+  right:12px;
+  font-size:26px;
+  color:var(--neon-purple);
+  cursor:pointer;
+}
+
+/* --- BUTTON KEMBALI --- */
+.back-btn{
+  margin-top:40px;
+  padding:12px 24px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,var(--neon-purple),var(--neon-blue));
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  font-size:14px;
+  transition:opacity .3s ease,transform .3s ease;
+  box-shadow:0 0 20px rgba(155,77,255,0.3);
+}
+.back-btn:hover{opacity:.9;transform:scale(1.05);}
+
+/* --- RESPONSIVE --- */
+@media(max-width:720px){
+  .section-title{font-size:26px;}
+  .project-info h3{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<section>
+  <div class="section-inner">
+    <h2 class="section-title">Project</h2>
+    <p style="max-width:600px;margin:10px auto
+    30px;color:var(--muted);font-size:14px;font-weight:600;">
+      Beberapa karya tambahan yang menampilkan sisi lain kreativitas saya.
+    </p>
+
+    <div class="projects-grid">
+      <div class="project-card" data-img="04.png" data-title="Anime GFX"
+      data-desc="GFX bergaya anime dengan efek visual yang kuat..">
+        <div class="project-media"><img src="04.png" alt="Dreamscape"></div>
+        <div class="project-info"><h3>Anime GFX</h3><p>GFX bergaya anime dengan
+        efek visual yang kuat.</p></div>
+      </div>
+
+      <div class="project-card" data-img="05.png" data-title="Wallpaper"
+      data-desc="Kobayashi Maid Dragon">
+        <div class="project-media"><img src="05.png" alt="wallpaper"></div>
+        <div class="project-info"><h3>Wallpaper</h3><p>Kobayashi Maid Dragon</p></div>
+      </div>
+
+      <div class="project-card" data-img="06.png" data-title="kosong"
+      data-desc="kosong">
+        <div class="project-media"><img src="06.png" alt="kosong"></div>
+        <div class="project-info"><h3>kosong</h3><p>kosong</p></div>
+      </div>
+
+      <div class="project-card" data-img="07.png" data-title="kosong"
+      data-desc="kosong">
+        <div class="project-media"><img src="07.png" alt="kosong"></div>
+        <div class="project-info"><h3>kosong</h3><p>kosong</p></div>
+      </div>
+    </div>
+
+    <button class="back-btn" id="backBtn">Kembali</button>
+  </div>
+</section>
+
+<!-- Popup project -->
+<div id="projectPopup" class="popup" aria-hidden="true">
+  <div class="popup-content" role="dialog" aria-modal="true">
+    <span class="close-btn" aria-label="close">&times;</span>
+    <img id="popupImage" src="" alt="">
+    <h3 id="popupTitle"></h3>
+    <p id="popupDesc"></p>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", ()=>{
+  document.body.classList.add("show");
+
+  const backBtn = document.getElementById("backBtn");
+  if(backBtn){
+    backBtn.addEventListener("click",(e)=>{
+      e.preventDefault();
+      document.body.classList.remove("show");
+      setTimeout(()=> window.location.href="16.html", 600);
+    });
+  }
+
+  const cards = document.querySelectorAll(".project-card");
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("visible");
+      } else {
+        entry.target.classList.remove("visible");
+      }
+    });
+  },{threshold:0.2});
+  cards.forEach(card=>observer.observe(card));
+
+  const popup = document.getElementById("projectPopup");
+  const popupImg = document.getElementById("popupImage");
+  const popupTitle = document.getElementById("popupTitle");
+  const popupDesc = document.getElementById("popupDesc");
+  const closeBtn = popup.querySelector(".close-btn");
+
+  function openPopup(img,title,desc){
+    popupImg.src = img;
+    popupTitle.textContent = title;
+    popupDesc.textContent = desc;
+    popup.classList.add("show");
+  }
+  function closePopup(){
+    popup.classList.remove("show");
+    setTimeout(()=> popup.style.display="none", 200);
+  }
+
+  cards.forEach(card=>{
+    card.addEventListener("click",()=>{
+      popup.style.display="flex";
+      setTimeout(()=>openPopup(
+        card.getAttribute("data-img"),
+        card.getAttribute("data-title"),
+        card.getAttribute("data-desc")
+      ),10);
+    });
+  });
+
+  closeBtn.addEventListener("click", closePopup);
+  window.addEventListener("click",(e)=>{ if(e.target===popup) closePopup(); });
+  window.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closePopup(); });
+});
+</script>
+
+</body>
+</html>
