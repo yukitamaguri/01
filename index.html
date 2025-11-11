@@ -128,10 +128,38 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
 
 /* responsive */
 @media(max-width:980px){.projects-grid{grid-template-columns:1fr}.hero-ui{width:92%}}
+
+#scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 4px;
+  width: 0%;
+  background: linear-gradient(90deg, #a86eff, #45d1ff);
+  border-radius: 2px;
+  box-shadow: 0 0 10px rgba(155,77,255,0.6), 0 0 20px rgba(69,209,255,0.5);
+  z-index: 9999;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  /* ✨ Transisi diperlambat & lebih lembut */
+  transition:
+    width 0.80s cubic-bezier(.25,.8,.25,1),
+    opacity 0.8s ease,
+    transform 0.8s cubic-bezier(.23,1,.32,1),
+    box-shadow 0.6s ease-in-out;
+}
+#scroll-progress.visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
 </style>
 </head>
 <body>
+  <!-- Scroll Progress Bar -->
+  <div id="scroll-progress"></div>
 
+  
 <!-- canvas bubbles + toast -->
 <canvas id="bubbles"></canvas>
 <div id="toast" class="toast" aria-hidden="true"></div>
@@ -248,7 +276,8 @@ document.addEventListener("DOMContentLoaded", ()=>{
   </div></section>
 </main>
 
-<footer><div class="section-inner">© <span id="year"></span> Mikennekogenchi — glowing in the dark</div></footer>
+<footer><div class="section-inner">© <span id="year"></span> Mikennekogenchi —
+Just someone who is bored.</div></footer>
 
 <!-- project popup -->
 <div id="projectPopup" class="popup" aria-hidden="true">
@@ -502,6 +531,34 @@ ${escapeMarkdown(message)}
   (function(){ const y = document.getElementById('year'); if(y) y.textContent = new Date().getFullYear(); })();
 
 }); // DOMContentLoaded
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const progressBar = document.getElementById("scroll-progress");
+  let scrollTimer;
+
+  function updateProgress() {
+    const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const scrollPercent = (scrollTop / scrollHeight) * 100;
+    progressBar.style.width = scrollPercent + "%";
+
+    // Munculkan bar saat menggulir
+    progressBar.classList.add("visible");
+
+    // Hilangkan bar setelah berhenti 1.2 detik
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(() => {
+      progressBar.classList.remove("visible");
+    }, 1200);
+  }
+
+  window.addEventListener("scroll", updateProgress);
+});
+
+
 </script>
+
 </body>
-                                                                                                                                     </html>
+  </html>
