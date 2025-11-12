@@ -13,6 +13,69 @@
   --text:#eae6ff;
   --muted:rgba(234,230,255,0.68);
 }
+
+  /* === NEON AIRPLANE CURSOR === */
+:root {
+  --neon-purple: #a86eff;
+  --neon-blue: #45d1ff;
+}
+
+/* Hilangkan kursor default */
+body {
+  cursor: none;
+}
+
+/* Kursor utama */
+#cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 28px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) rotate(0deg);
+  transition: transform 0.1s linear;
+  z-index: 9999;
+}
+
+/* Bentuk segitiga seperti pesawat */
+#cursor::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid var(--neon-purple);
+  transform: translate(-50%, -50%) rotate(0deg);
+  filter: drop-shadow(0 0 10px var(--neon-purple))
+          drop-shadow(0 0 20px var(--neon-blue));
+}
+
+/* Ekor cahaya (trail) */
+.trail {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0.6;
+  filter: blur(2px);
+  animation: fadeOut 0.6s ease-out forwards;
+  z-index: 9998;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+}
+
+  
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
 body{
@@ -164,6 +227,10 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
 </style>
 </head>
 <body>
+  
+  <!-- Custom Neon Cursor -->
+<div id="cursor"></div>
+
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
 
@@ -565,7 +632,40 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", updateProgress);
 });
 
+// === NEON AIRPLANE CURSOR ===
+const cursor = document.getElementById("cursor");
+let mouseX = 0, mouseY = 0;
+let posX = 0, posY = 0;
 
+document.addEventListener("mousemove", (e) => {
+  mouseX = e.clientX;
+  mouseY = e.clientY;
+});
+
+// Animasi gerakan kursor halus
+function animateCursor() {
+  const dx = mouseX - posX;
+  const dy = mouseY - posY;
+  posX += dx * 0.15;
+  posY += dy * 0.15;
+
+  // Rotasi sesuai arah gerak
+  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  cursor.style.transform = `translate(${posX}px, ${posY}px) rotate(${angle + 90}deg)`;
+
+  // Efek jejak cahaya
+  const trail = document.createElement("div");
+  trail.className = "trail";
+  trail.style.left = posX + "px";
+  trail.style.top = posY + "px";
+  document.body.appendChild(trail);
+  setTimeout(() => trail.remove(), 600);
+
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+  
 </script>
 
 </body>
