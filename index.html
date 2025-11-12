@@ -14,31 +14,30 @@
   --muted:rgba(234,230,255,0.68);
 }
 
-  /* === NEON AIRPLANE CURSOR === */
+/* === STATIC NEON AIRPLANE CURSOR === */
 :root {
   --neon-purple: #a86eff;
   --neon-blue: #45d1ff;
 }
 
-/* Hilangkan kursor default */
 body {
   cursor: none;
 }
 
-/* Kursor utama */
+/* Kursor diam di tengah layar */
 #cursor {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 28px;
-  height: 28px;
-  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  width: 36px;
+  height: 36px;
   transform: translate(-50%, -50%) rotate(0deg);
-  transition: transform 0.1s linear;
+  pointer-events: none;
   z-index: 9999;
+  transition: transform 0.15s linear;
 }
 
-/* Bentuk segitiga seperti pesawat */
+/* Bentuk segitiga (pesawat) */
 #cursor::before {
   content: "";
   position: absolute;
@@ -52,27 +51,6 @@ body {
   transform: translate(-50%, -50%) rotate(0deg);
   filter: drop-shadow(0 0 10px var(--neon-purple))
           drop-shadow(0 0 20px var(--neon-blue));
-}
-
-/* Ekor cahaya (trail) */
-.trail {
-  position: fixed;
-  width: 6px;
-  height: 6px;
-  background: linear-gradient(90deg, var(--neon-purple), var(--neon-blue));
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0.6;
-  filter: blur(2px);
-  animation: fadeOut 0.6s ease-out forwards;
-  z-index: 9998;
-}
-
-@keyframes fadeOut {
-  to {
-    opacity: 0;
-    transform: scale(0.3);
-  }
 }
 
   
@@ -642,28 +620,22 @@ document.addEventListener("mousemove", (e) => {
   mouseY = e.clientY;
 });
 
-// Animasi gerakan kursor halus
-function animateCursor() {
-  const dx = mouseX - posX;
-  const dy = mouseY - posY;
-  posX += dx * 0.15;
-  posY += dy * 0.15;
+// === STATIC DIRECTIONAL CURSOR ===
+const cursor = document.getElementById("cursor");
+let lastX = window.innerWidth / 2;
+let lastY = window.innerHeight / 2;
 
-  // Rotasi sesuai arah gerak
+document.addEventListener("mousemove", (e) => {
+  const dx = e.clientX - lastX;
+  const dy = e.clientY - lastY;
   const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-  cursor.style.transform = `translate(${posX}px, ${posY}px) rotate(${angle + 90}deg)`;
 
-  // Efek jejak cahaya
-  const trail = document.createElement("div");
-  trail.className = "trail";
-  trail.style.left = posX + "px";
-  trail.style.top = posY + "px";
-  document.body.appendChild(trail);
-  setTimeout(() => trail.remove(), 600);
+  // Rotasi pesawat sesuai arah gerakan
+  cursor.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
 
-  requestAnimationFrame(animateCursor);
-}
-animateCursor();
+  lastX = e.clientX;
+  lastY = e.clientY;
+});
 
   
 </script>
