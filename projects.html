@@ -169,36 +169,11 @@ section{
   .project-info h3{font-size:16px;}
 }
 
-  #scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 4px;
-  width: 0%;
-  background: linear-gradient(90deg, #a86eff, #45d1ff);
-  border-radius: 2px;
-  box-shadow: 0 0 10px rgba(155,77,255,0.6), 0 0 20px rgba(69,209,255,0.5);
-  z-index: 9999;
-  opacity: 0;
-  transform: scaleX(0);
-  transform-origin: left center;
-  /* ✨ Transisi diperlambat & lebih lembut */
-  transition:
-    width 0.80s cubic-bezier(.25,.8,.25,1),
-    opacity 0.8s ease,
-    transform 0.8s cubic-bezier(.23,1,.32,1),
-    box-shadow 0.6s ease-in-out;
-}
-#scroll-progress.visible {
-  opacity: 1;
-  transform: scaleX(1);
-  
 </style>
 </head>
 <body>
   
-  <!-- Scroll Progress Bar -->
-  <div id="scroll-progress"></div>
+  
 
 <section>
   <div class="section-inner">
@@ -307,18 +282,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
   window.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closePopup(); });
 });
 
-  // Munculkan bar saat menggulir
-    progressBar.classList.add("visible");
-
-    // Hilangkan bar setelah berhenti 1.2 detik
-    clearTimeout(scrollTimer);
-    scrollTimer = setTimeout(() => {
-      progressBar.classList.remove("visible");
-    }, 1200);
-  }
-
-  window.addEventListener("scroll", updateProgress);
-});
+ 
 
 </script>
 
