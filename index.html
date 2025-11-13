@@ -1,4 +1,5 @@
 
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -162,32 +163,6 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
   opacity: 1;
   transform: scaleX(1);
 }
-
-body {
-    cursor: none; /* sembunyikan kursor asli browser */
-}
-
-<style>
-  .cursor {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 20px;
-    height: 20px;
-    pointer-events: none;
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-
-  .cursor svg {
-    width: 100%;
-    height: 100%;
-    fill: #ffffff; /* warna putih */
-    filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.7));
-    transform-origin: 20% 50%; /* titik rotasi di pangkal panah */
-  }
-</style>
-
-  
 </style>
 </head>
 <body>
@@ -594,46 +569,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 </script>
-  
-<div class="cursor">
-  <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <path d="M10,10 L85,50 L10,90 L25,55 L10,10 Z" />
-  </svg>
-</div>
 
-<script>
-  const cursor = document.querySelector('.cursor');
-  let mouseX = 0, mouseY = 0;
-  let currentX = 0, currentY = 0;
-  let lastX = 0, lastY = 0;
-  let angle = 0;
-
-  document.addEventListener('mousemove', (e) => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  function animate() {
-    currentX += (mouseX - currentX) * 0.2;
-    currentY += (mouseY - currentY) * 0.2;
-
-    const dx = currentX - lastX;
-    const dy = currentY - lastY;
-    if (Math.abs(dx) > 0.001 || Math.abs(dy) > 0.001) {
-      angle = Math.atan2(dy, dx) * (180 / Math.PI);
-    }
-
-    cursor.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${angle}deg)`;
-
-    lastX = currentX;
-    lastY = currentY;
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
-</script>
-
-  
 </body>
   </html>
