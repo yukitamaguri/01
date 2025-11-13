@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="id">
 <head>
@@ -13,47 +14,6 @@
   --text:#eae6ff;
   --muted:rgba(234,230,255,0.68);
 }
-
-/* === STATIC NEON AIRPLANE CURSOR === */
-:root {
-  --neon-purple: #a86eff;
-  --neon-blue: #45d1ff;
-}
-
-body {
-  cursor: none;
-}
-
-/* Kursor diam di tengah layar */
-#cursor {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 36px;
-  height: 36px;
-  transform: translate(-50%, -50%) rotate(0deg);
-  pointer-events: none;
-  z-index: 9999;
-  transition: transform 0.15s linear;
-}
-
-/* Bentuk segitiga (pesawat) */
-#cursor::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 18px solid var(--neon-purple);
-  transform: translate(-50%, -50%) rotate(0deg);
-  filter: drop-shadow(0 0 10px var(--neon-purple))
-          drop-shadow(0 0 20px var(--neon-blue));
-}
-
-  
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
 body{
@@ -205,10 +165,6 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
 </style>
 </head>
 <body>
-  
-  <!-- Custom Neon Cursor -->
-<div id="cursor"></div>
-
   <!-- Scroll Progress Bar -->
   <div id="scroll-progress"></div>
 
@@ -610,34 +566,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", updateProgress);
 });
 
-// === NEON AIRPLANE CURSOR ===
-const cursor = document.getElementById("cursor");
-let mouseX = 0, mouseY = 0;
-let posX = 0, posY = 0;
 
-document.addEventListener("mousemove", (e) => {
-  mouseX = e.clientX;
-  mouseY = e.clientY;
-});
-
-// === STATIC DIRECTIONAL CURSOR ===
-const cursor = document.getElementById("cursor");
-let lastX = window.innerWidth / 2;
-let lastY = window.innerHeight / 2;
-
-document.addEventListener("mousemove", (e) => {
-  const dx = e.clientX - lastX;
-  const dy = e.clientY - lastY;
-  const angle = Math.atan2(dy, dx) * (180 / Math.PI);
-
-  // Rotasi pesawat sesuai arah gerakan
-  cursor.style.transform = `translate(-50%, -50%) rotate(${angle + 90}deg)`;
-
-  lastX = e.clientX;
-  lastY = e.clientY;
-});
-
-  
 </script>
 
 </body>
