@@ -13,19 +13,6 @@
   --text:#eae6ff;
   --muted:rgba(234,230,255,0.68);
 }
-  /* --- SCROLL PROGRESS BAR --- */
-#scroll-progress {
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 5px;
-  width: 0%;
-  background: linear-gradient(90deg, #a86eff, #45d1ff);
-  box-shadow: 0 0 12px #a86eff, 0 0 24px #45d1ff;
-  z-index: 9999;
-  transition: width 0.25s ease-out;
-}
-
 *{box-sizing:border-box;margin:0;padding:0;scroll-behavior:smooth}
 html,body{height:100%}
 body{
@@ -184,9 +171,6 @@ section{
 </style>
 </head>
 <body>
-  
-  <!-- Scroll Progress Bar -->
-  <div id="scroll-progress"></div>
 
 <section>
   <div class="section-inner">
@@ -246,7 +230,7 @@ document.addEventListener("DOMContentLoaded", ()=>{
     backBtn.addEventListener("click",(e)=>{
       e.preventDefault();
       document.body.classList.remove("show");
-      setTimeout(()=> window.location.href="index.html", 600);
+      setTimeout(()=> window.location.href="16.html", 600);
     });
   }
 
@@ -294,16 +278,10 @@ document.addEventListener("DOMContentLoaded", ()=>{
   window.addEventListener("click",(e)=>{ if(e.target===popup) closePopup(); });
   window.addEventListener("keydown",(e)=>{ if(e.key==="Escape") closePopup(); });
 });
-
-  // Scroll Progress Bar
-window.addEventListener("scroll", () => {
-  const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-  const scrollPercent = (scrollTop / scrollHeight) * 100;
-  document.getElementById("scroll-progress").style.width = scrollPercent + "%";
-});
-
 </script>
 
+<link rel="stylesheet" href="cursor.css">
+<script src="cursor.js"></script>
+
 </body>
-</html>
+  </html>
