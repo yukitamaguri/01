@@ -1,4 +1,12 @@
 // === Smart Custom Cursor ===
+
+// Matikan semua cursor custom di perangkat mobile / tablet
+if (window.innerWidth < 1025) {
+  // Jangan jalankan script cursor sama sekali
+  console.log("Custom cursor disabled on mobile.");
+  return;
+}
+
 window.addEventListener("load", () => {
   let touchDetected = false;
   window.addEventListener('touchstart', () => touchDetected = true, { once: true });
