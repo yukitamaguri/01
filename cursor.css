@@ -31,3 +31,13 @@ html, body, a, button, input, textarea, select, iframe,
   stroke-width: 3;
   stroke-linejoin: round;
 }
+
+/* Matikan cursor custom sepenuhnya di mobile */
+@media (max-width: 1024px) {
+  .cursor-fx {
+    display: none !important;
+  }
+  * {
+    cursor: auto !important;
+  }
+}
