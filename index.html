@@ -377,6 +377,24 @@ document.addEventListener('DOMContentLoaded', function(){
     }
   })();
 
+// ==== CLOSE MENU WHEN CLICK OUTSIDE ====
+document.addEventListener("click", function (e) {
+  const menuPanel = document.getElementById("menuPanel");
+  const hamburger = document.getElementById("hamburger");
+
+  if (!menuPanel) return;
+
+  // Jika menu sedang terbuka dan klik di luar menu & luar hamburger
+  if (
+    menuPanel.classList.contains("open") &&
+    !menuPanel.contains(e.target) &&
+    !hamburger.contains(e.target)
+  ) {
+    menuPanel.classList.remove("open");
+    hamburger.classList.remove("active");
+  }
+});
+
   /* ---------------------------
      TYPING NAME
      --------------------------- */
@@ -568,7 +586,11 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
+
 </script>
+
+
 
 <link rel="stylesheet" href="cursor.css">
 <script src="cursor.js"></script>
