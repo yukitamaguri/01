@@ -5,345 +5,164 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Intro</title>
 
-<style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: radial-gradient(circle at top left, #090014 0%, #050011 50%, #0b0020 100%);
+  <style>
+  html,body{height:100%;margin:0;background:radial-gradient(circle at top left,#090014 0%,#050011 50%,#0b0020 100%);overflow:hidden}
+  :root{--intro-delay:0s}
+  #introScreen{position:fixed;inset:0;width:100%;height:100%;overflow:hidden;background:#050008;z-index:999999;pointer-events:none}
+  #introVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:-1;filter:brightness(0.55) saturate(1.2);opacity:0;transition:opacity .6s ease}
+  .video-ready #introVideo{opacity:1}
+  #introOverlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;text-align:center;opacity:1;transition:opacity .8s ease;pointer-events:none}
+  #introOverlay.fade-out{opacity:0}
+  #introScreen.fade-out-container{transition:opacity .8s ease, transform .8s ease;opacity:0;transform:scale(1.03)}
+
+  /* hide initial */
+  .intro-content,.intro-logo-top img,.intro-logo svg,.scroll-arrow{opacity:0;animation-play-state:paused}
+
+  .intro-content{animation:introTextIn .9s ease forwards;animation-delay:calc(var(--intro-delay) + .4s)}
+  @keyframes introTextIn{to{opacity:1;transform:translateY(0)}}
+  .intro-title{font-size:clamp(28px,5vw,56px);color:#fff;font-weight:700;margin:0;text-shadow:0 0 14px rgba(168,110,255,.9),0 0 28px rgba(69,209,255,.75)}
+
+  .intro-logo-group{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;margin-bottom:25px;opacity:0;animation:groupFade 1s ease forwards;animation-delay:calc(var(--intro-delay) + .2s);animation-play-state:paused}
+  @keyframes groupFade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+  .intro-logo-top img{width:88px;margin-bottom:-28px;animation:smallLogoAnim 1.4s ease forwards;animation-delay:calc(var(--intro-delay) + .8s);filter:drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 12px #4fd8ff)}
+  .intro-logo-row{display:flex;gap:22px;align-items:center;justify-content:center}
+  .intro-logo svg{width:37px;height:37px;animation:smallLogoAnim 1.4s ease forwards;filter:drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff)}
+  .intro-logo-row .intro-logo:nth-child(1) svg{animation-delay:calc(var(--intro-delay) + 1.2s)}
+  .intro-logo-row .intro-logo:nth-child(2) svg{animation-delay:calc(var(--intro-delay) + 1.6s)}
+  .intro-logo-row .intro-logo:nth-child(3) svg{animation-delay:calc(var(--intro-delay) + 2.0s)}
+
+  @keyframes smallLogoAnim{
+    0%{opacity:0;transform:scale(.7)}20%{opacity:1;transform:scale(1.08)}
+    35%{transform:translateX(-1px) scale(1.06)}45%{transform:translateX(1px) scale(1.06)}
+    55%{transform:translateX(0) scale(1.03)}100%{opacity:1;transform:scale(1)}
   }
 
-  :root { --intro-fade-duration: 0.8s; }
-
-  #introScreen {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #050008;
-    z-index: 999999;
-    pointer-events: none;
+  @keyframes logoGlitchFlash{
+    0%{filter:drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff);transform:translate(0,0)}
+    25%{filter:hue-rotate(40deg) brightness(1.4);transform:translate(-2px,1px)}
+    50%{filter:hue-rotate(-40deg) brightness(1.4);transform:translate(2px,-1px)}
+    75%{filter:drop-shadow(0 0 6px #b472ff) drop-shadow(0 0 14px #59e8ff);transform:translate(-1px,0)}
+    100%{filter:drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff);transform:translate(0,0)}
   }
+  .glitch-once{animation:logoGlitchFlash .25s ease}
 
-  #introVideo {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    z-index: -1;
-    filter: brightness(0.55) saturate(1.2);
-  }
+  .scroll-arrow{margin-top:28px;font-size:34px;font-weight:800;color:#e4d7ff;letter-spacing:1px;opacity:0;animation:fadeScroll .9s ease forwards;animation-delay:calc(var(--intro-delay) + 2.2s)}
+  @keyframes fadeScroll{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
 
-  #introOverlay {
-    position: absolute;
-    inset: 0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    flex-direction:column;
-    text-align:center;
-    opacity:1;
-    transition: opacity var(--intro-fade-duration) ease;
-    pointer-events: none;
-  }
+  .scroll-arrow::after{content:"↓";display:inline-block;animation:ultraMove 1.9s ease-in-out infinite,ultraSwap 1.9s ease-in-out infinite,ultraGlow 1.9s ease-in-out infinite}
+  @keyframes ultraMove{0%{transform:translateY(0)}35%{transform:translateY(17px)}45%{transform:translateY(17px)}49%{transform:translateY(11px)}50%{transform:translateY(0)}51%{transform:translateY(-9px)}60%{transform:translateY(-17px)}100%{transform:translateY(0)}}
+  @keyframes ultraSwap{0%,45%{content:"↓"}50%,60%{content:"↑"}99%,100%{content:"↓"}}
+  @keyframes ultraGlow{0%{text-shadow:0 0 6px #a86eff}35%{text-shadow:0 3px 12px #5ee8ff}50%{text-shadow:0 -4px 14px #d29bff}60%{text-shadow:0 -3px 12px #e09aff}100%{text-shadow:0 0 6px #a86eff}}
 
-  #introOverlay.fade-out { opacity: 0; }
-  #introScreen.fade-out-container {
-    transition: opacity var(--intro-fade-duration) ease, transform var(--intro-fade-duration) ease;
-    opacity: 0;
-    transform: scale(1.03);
-  }
-
-  /* ========== LOGO GROUP ========== */
-  .intro-logo-group {
-    display: flex;
-    flex-direction: column;
-    align-items:center;
-    justify-content:center;
-    gap: 16px;
-    width: 100%;
-    margin-bottom: 2px;
-    opacity: 0;
-    animation: logoGroupFade 1s ease forwards;
-    animation-delay: 1.5s; /* Delay 3 detik sebelum muncul */
-  }
-
-  @keyframes logoGroupFade {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* LOGO atas (Crown) */
-  .intro-logo-top img {
-    width: 88px;
-    height: auto;
-    opacity: 0;
-    animation: smallLogoAnim 1.8s ease forwards;
-    animation-delay: 1s;
-    filter: drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 12px #4fd8ff);
-    margin-bottom: -30px;
-  }
-
-  /* LOGO row bawah */
-  .intro-logo-row {
-    display: flex;
-    gap: 22px;
-  }
-
-  .intro-logo svg {
-    width: 37px;
-    height: 37px;
-    opacity: 0;
-    animation: smallLogoAnim 1.8s ease forwards;
-    animation-delay: 1.9s;
-    filter: drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff);
-  }
-
-  @keyframes smallLogoAnim {
-    0%   { opacity: 0; transform: scale(0.7); }
-    20%  { opacity: 1; transform: scale(1.1); }
-    32%  { transform: translateX(-1px) scale(1.06); }
-    35%  { transform: translateX(1px) scale(1.06); }
-    38%  { transform: translateX(0) scale(1.03); }
-    100% { opacity: 1; transform: scale(1); }
-  }
-
-  /* ==== Glitch After Fade In ==== */
-  @keyframes logoGlitchFlash {
-    0% { filter: drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff); }
-    20% { filter: hue-rotate(40deg) brightness(1.4); transform: translate(-2px,1px); }
-    40% { filter: hue-rotate(-40deg) brightness(1.4); transform: translate(2px,-1px); }
-    60% { filter: drop-shadow(0 0 6px #b472ff) drop-shadow(0 0 14px #59e8ff); }
-    100%{ filter: drop-shadow(0 0 4px #a86eff) drop-shadow(0 0 10px #4fd8ff); transform: translate(0,0); }
-  }
-  .glitch-once { animation: logoGlitchFlash 0.25s ease; }
-
-  /* ========== WELCOME TEXT ========== */
-  .intro-title {
-    font-size: clamp(28px, 5vw, 56px);
-    color:#fff;
-    text-shadow: 0 0 14px rgba(168,110,255,0.9), 0 0 28px rgba(69,209,255,0.75);
-    margin:0;
-    opacity: 0;
-    animation: fadeWelcome 1.4s ease forwards;
-    animation-delay: 2.5s;
-  }
-
-  @keyframes fadeWelcome {
-    from { opacity: 0; transform: translateY(10px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Scroll Arrow */
-  .scroll-arrow {
-    margin-top: 28px;
-    font-size: 34px;
-    font-weight: 800;
-    opacity: 0;
-    animation: fadeScroll 1.4s ease forwards;
-    animation-delay: 3.7s;
-    color: #e4d7ff;
-    letter-spacing: 1px;
-  }
-
-  @keyframes fadeScroll {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-
-/* ========================================================= */
-/*                 PANAH ANIMASI (17px SMOOTH)               */
-/* ========================================================= */
-
-  .scroll-arrow::after {
-    content: "↓";
-    display: inline-block;
-    animation:
-      ultraMove 1.9s ease-in-out infinite,
-      ultraSwap 1.9s ease-in-out infinite,
-      ultraGlow 1.9s ease-in-out infinite;
-  }
-
-  /* === 1. Anti-teleport smooth movement === */
-  @keyframes ultraMove {
-    0%     { transform: translateY(0); }
-
-    /* Turun */
-    35%    { transform: translateY(17px); }
-    45%    { transform: translateY(17px); } /* jeda natural */
-
-    /* Zona transisi balik arah */
-    49%    { transform: translateY(10px); }
-    50%    { transform: translateY(0px); }
-    51%    { transform: translateY(-8px); }
-
-    /* Naik penuh */
-    60%    { transform: translateY(-17px); }
-    100%   { transform: translateY(0); }
-  }
-
-  /* === 2. Swap simbol ↑ ↓ presisi === */
-  @keyframes ultraSwap {
-    0%      { content: "↓"; }
-    45%     { content: "↓"; }
-    50%     { content: "↑"; } /* tepat saat balik */
-    60%     { content: "↑"; }
-    99%     { content: "↓"; }
-    100%    { content: "↓"; }
-  }
-
-  /* === 3. Glow mengikuti arah === */
-  @keyframes ultraGlow {
-    0% {
-      text-shadow:
-        0 0 6px #a86eff,
-        0 0 12px #5ee8ff;
-    }
-
-    /* glow bawah */
-    35% {
-      text-shadow:
-        0 3px 12px #5ee8ff,
-        0 0 18px #4fd8ff;
-    }
-
-    49% {
-      text-shadow:
-        0 4px 14px #6ff0ff;
-    }
-
-    /* glow atas */
-    50% {
-      text-shadow:
-        0 -4px 14px #d29bff,
-        0 0 18px #c06bff;
-    }
-
-    60% {
-      text-shadow:
-        0 -3px 12px #e09aff,
-        0 0 16px #c574ff;
-    }
-
-    100% {
-      text-shadow:
-        0 0 6px #a86eff,
-        0 0 12px #5ee8ff;
-    }
-  }
-
-</style>
+  @media (max-width:600px){.intro-logo-top img{width:64px;margin-bottom:-22px}.intro-logo svg{width:30px;height:30px}.scroll-arrow{font-size:28px;margin-top:22px}}
+  </style>
 </head>
 <body>
 
-<div id="introScreen">
+<div id="introScreen" role="dialog" aria-label="Intro screen">
   <video id="introVideo" autoplay muted loop playsinline preload="auto" poster="fallback.jpg">
-    <source src="Cihuy.mp4" type="video/mp4">
+    <source src="cihuy.mp4" type="video/mp4">
+    <!-- fallback text -->
   </video>
 
   <div id="introOverlay">
     <div class="intro-content">
 
-      <!-- LOGO GROUP -->
       <div class="intro-logo-group">
 
-        <!-- Crown -->
         <div class="intro-logo-top">
           <img src="Crown.png" alt="Crown Logo">
         </div>
 
         <div class="intro-logo-row">
 
-          <!-- GitHub -->
-          <div class="intro-logo">
-            <svg viewBox="0 0 16 16" fill="currentColor">
-              <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38
-              0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52
-              -.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95
-              0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.55 7.55 0 0 1 4 0c1.53-1.04 2.2-.82
-              2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01
-              2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+          <!-- GITHUB (full path) -->
+          <div class="intro-logo" aria-hidden="true">
+            <svg viewBox="0 0 16 16" fill="currentColor" width="37" height="37">
+              <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.01.08-2.11 0 0 .67-.21 2.2.82a7.55 7.55 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.91.08 2.11.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.19 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
             </svg>
           </div>
 
-          <!-- Twitter -->
-          <div class="intro-logo">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.4 1c-.88.52-1.86.89-2.9 1.1A4.48 4.48 0 0 0 16.6
-              0c-2.48 0-4.5 2.02-4.5 4.5 0 .35.04.7.11 1.03-3.74-.19-7.06-1.98-9.27-4.7a4.47 4.47 0 0 0-.61 2.27c0 1.57.8 2.95
-              2.01 3.76a4.48 4.48 0 0 1-2.04-.56v.06c0 2.18 1.55 4 3.6 4.42a4.52 4.52 0 0 1-2.03.08c.57 1.78 2.23 3.07 4.19
-              3.11A9.02 9.02 0 0 1 0 19.54a12.72 12.72 0 0 0 6.92 2.03c8.3 0 12.85-6.88 12.85-12.85 0-.2 0-.41-.01-.61A9.18
-              9.18 0 0 0 23 3z"/>
+          <!-- TWITTER (full path) -->
+          <div class="intro-logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="37" height="37">
+              <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.4 1c-.88.52-1.86.89-2.9 1.1A4.48 4.48 0 0 0 16.6 0c-2.48 0-4.5 2.02-4.5 4.5 0 .35.04.7.11 1.03-3.74-.19-7.06-1.98-9.27-4.7a4.47 4.47 0 0 0-.61 2.27c0 1.57.8 2.95 2.01 3.76a4.48 4.48 0 0 1-2.04-.56v.06c0 2.18 1.55 4 3.6 4.42a4.52 4.52 0 0 1-2.03.08c.57 1.78 2.23 3.07 4.19 3.11A9.02 9.02 0 0 1 0 19.54a12.72 12.72 0 0 0 6.92 2.03c8.3 0 12.85-6.88 12.85-12.85 0-.2 0-.41-.01-.61A9.18 9.18 0 0 0 23 3z"/>
             </svg>
           </div>
 
-          <!-- Discord -->
-          <div class="intro-logo">
-            <svg viewBox="0 0 71 55" fill="currentColor">
-              <path d="M60.104 4.552A58.73 58.73 0 0 0 46.942.69a41.993 41.993 0 0 0-1.957 3.969c-5.563-.82-11.118-.82-16.653 0A41.767
-              41.767 0 0 0 26.375.69 58.567 58.567 0 0 0 13.21 4.552C3.104 20.463-.388 35.203.392 49.883c12.618 9.339 24.615 10.024
-              35.56 10.024 10.945 0 22.942-.685 35.56-10.024.779-14.68-2.725-29.42-12.408-45.331z"/>
+          <!-- DISCORD (full path) -->
+          <div class="intro-logo" aria-hidden="true">
+            <svg viewBox="0 0 71 55" fill="currentColor" width="37" height="37">
+              <path d="M60.104 4.552A58.73 58.73 0 0 0 46.942.69a41.993 41.993 0 0 0-1.957 3.969c-5.563-.82-11.118-.82-16.653 0A41.767 41.767 0 0 0 26.375.69 58.567 58.567 0 0 0 13.21 4.552C3.104 20.463-.388 35.203.392 49.883c12.618 9.339 24.615 10.024 35.56 10.024 10.945 0 22.942-.685 35.56-10.024.779-14.68-2.725-29.42-12.408-45.331z"/>
             </svg>
           </div>
 
         </div>
-
       </div>
 
       <h1 class="intro-title">WELCOME</h1>
-
-      <p class="scroll-arrow"></p>
+      <div class="scroll-arrow" aria-hidden="true"></div>
 
     </div>
   </div>
 </div>
 
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* === Glitch after all fade-ins === */
-  const allLogos = document.querySelectorAll(".intro-logo svg, .intro-logo-top img");
+  const video = document.getElementById("introVideo");
+  const overlay = document.getElementById("introOverlay");
+  const screen = document.getElementById("introScreen");
 
-  setTimeout(() => {
-    allLogos.forEach(logo => {
-      logo.classList.add("glitch-once");
-      setTimeout(() => logo.classList.remove("glitch-once"), 300);
-    });
-  }, 4200); /* glitch setelah semua animasi */
+  function startAll() {
+    document.body.classList.add("video-ready");
 
-  /* ===== EXIT SCREEN ===== */
-  const overlay = document.getElementById('introOverlay');
-  const screen = document.getElementById('introScreen');
-  const DURATION = 800;
+    // start CSS animations by unpausing
+    document.querySelectorAll(".intro-content, .intro-logo-group, .intro-logo-top img, .intro-logo svg, .scroll-arrow")
+      .forEach(el => el.style.animationPlayState = "running");
+
+    // set specific animation delays (relative)
+    document.querySelector(".intro-content").style.animationDelay = "0.4s";
+    document.querySelector(".intro-logo-group").style.animationDelay = "0.2s";
+    document.querySelector(".intro-logo-top img").style.animationDelay = "0.8s";
+    document.querySelector(".intro-logo-row .intro-logo:nth-child(1) svg").style.animationDelay = "1.2s";
+    document.querySelector(".intro-logo-row .intro-logo:nth-child(2) svg").style.animationDelay = "1.6s";
+    document.querySelector(".intro-logo-row .intro-logo:nth-child(3) svg").style.animationDelay = "2.0s";
+    document.querySelector(".scroll-arrow").style.animationDelay = "2.2s";
+
+    // glitch after last logo animation (give buffer)
+    setTimeout(() => {
+      document.querySelectorAll(".intro-logo svg, .intro-logo-top img").forEach(logo => {
+        logo.classList.add("glitch-once");
+        setTimeout(() => logo.classList.remove("glitch-once"), 350);
+      });
+    }, 3400);
+  }
+
+  video.addEventListener("loadeddata", startAll, {once:true});
+  video.addEventListener("canplay", startAll, {once:true});
+  video.addEventListener("playing", startAll, {once:true});
+
+  // Exit handlers
   let exited = false;
-
   function startExit() {
     if (exited) return;
     exited = true;
-
-    overlay.classList.add('fade-out');
-
-    setTimeout(() => {
-      screen.classList.add('fade-out-container');
-    }, DURATION);
-
-    setTimeout(() => {
-      window.location.href = "16.html";
-    }, DURATION * 2);
+    overlay.classList.add("fade-out");
+    setTimeout(() => screen.classList.add("fade-out-container"), 800);
+    setTimeout(() => window.location.href = "16.html", 1600);
   }
+  window.addEventListener("wheel", startExit, {once:true, passive:true});
+  window.addEventListener("touchmove", startExit, {once:true, passive:true});
+  window.addEventListener("scroll", startExit, {once:true, passive:true});
+  window.addEventListener("keydown", e => { if(!exited && (e.key==="Enter"||e.key===" ")) startExit(); });
 
-  window.addEventListener('wheel', startExit, { once:true, passive:true });
-  window.addEventListener('touchmove', startExit, { once:true, passive:true });
-  window.addEventListener('scroll', startExit, { once:true, passive:true });
-  window.addEventListener('keydown', (e) => {
-    if (!exited && (e.key === 'Enter' || e.key === ' ')) startExit();
-  });
+  // try to play on user click (some browsers require gesture)
+  document.addEventListener("click", ()=>{ if(video && video.paused) video.play().catch(()=>{}); }, {once:true});
+
 });
 </script>
 
 </body>
-  </html>
+                </html>
