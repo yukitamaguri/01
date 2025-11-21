@@ -163,7 +163,11 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
   opacity: 1;
   transform: scaleX(1);
 }
+
+
+
 </style>
+<link rel="stylesheet" href="menu.css">
 </head>
 <body>
   <!-- Scroll Progress Bar -->
@@ -178,12 +182,28 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
   <div class="hamburger" id="hamburger" aria-label="menu" role="button"><div class="lines"><span></span><span></span><span></span></div></div>
 </header>
 
+
+
+
+
 <aside class="menu-panel" id="menuPanel">
   <a href="#home">Home</a>
   <a href="#about">About</a>
   <a href="#skill">Skill</a>
   <a href="#projects">Projects</a>
   <a href="#contact">Contact</a>
+  <!-- Neon button + collapsible links -->
+<button id="neonBtn" class="neon-btn" aria-expanded="false" aria-controls="neonLinks">
+  🔮 Lainnya
+</button>
+
+<div id="neonLinks" class="neon-links" aria-hidden="true">
+  <a href="https://yukitamaguri.github.io/tc" target="_blank"
+  rel="noopener">Verifikasi</a>
+  <a href="https://yukitamaguri.github.io/Cheat" target="_blank"
+  rel="noopener">Cheat</a>
+  <a href=" gk tau " target="_blank" rel="noopener">Website 3</a>
+</div>
 </aside>
 
 <main>
@@ -591,6 +611,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
+<script src="menu.js"></script>
 
 <link rel="stylesheet" href="cursor.css">
 <script src="cursor.js"></script>
