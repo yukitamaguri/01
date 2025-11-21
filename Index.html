@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     exited = true;
     overlay.classList.add('fade-out');
     setTimeout(()=>{ screen.classList.add('fade-out-container'); }, DURATION_MS);
-    setTimeout(()=>{ window.location.href='index.html'; }, DURATION_MS*2);
+    setTimeout(()=>{ window.location.href='home.html'; }, DURATION_MS*2);
   }
 
   window.addEventListener('wheel', startExit,{once:true,passive:true});
