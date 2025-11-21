@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Intro Glitch dengan Drop-shadow</title>
+<title>Intro</title>
 
 <style>
 html, body {
@@ -166,7 +166,7 @@ html, body {
       </div>
 
       <h1 class="intro-title">WELCOME</h1>
-      <p class="intro-sub">Scroll untuk masuk...</p>
+      <p class="intro-sub">Scroll</p>
 
     </div>
   </div>
@@ -203,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     exited = true;
     overlay.classList.add('fade-out');
     setTimeout(()=>{ screen.classList.add('fade-out-container'); }, DURATION_MS);
-    setTimeout(()=>{ window.location.href='16.html'; }, DURATION_MS*2);
+    setTimeout(()=>{ window.location.href='index.html'; }, DURATION_MS*2);
   }
 
   window.addEventListener('wheel', startExit,{once:true,passive:true});
