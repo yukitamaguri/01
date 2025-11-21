@@ -1,0 +1,85 @@
+/* ===== Neon button (inside menu panel) ===== */
+.neon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  background: linear-gradient(135deg, rgba(168,110,255,0.08), rgba(69,209,255,0.04));
+  border: 1px solid rgba(168,110,255,0.15);
+  border-radius: 12px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform .14s ease, box-shadow .18s ease, background .18s;
+  box-shadow:
+    0 0 18px rgba(168,110,255,0.06),
+    0 0 36px rgba(69,209,255,0.02) inset;
+  backdrop-filter: blur(4px);
+}
+
+/* neon glow on hover/focus */
+.neon-btn:hover,
+.neon-btn:focus {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow:
+    0 6px 28px rgba(168,110,255,0.16),
+    0 0 48px rgba(69,209,255,0.06),
+    0 0 8px rgba(168,110,255,0.12) inset;
+  outline: none;
+}
+
+/* small animated accent glow */
+.neon-btn::after {
+  content: "";
+  display: block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-left: 6px;
+  box-shadow: 0 0 8px var(--neon-purple), 0 0 14px var(--neon-blue);
+  opacity: 0.9;
+  transform: translateY(0);
+  transition: transform .25s ease, opacity .25s;
+}
+
+/* Collapsible links container */
+.neon-links {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .34s cubic-bezier(.2,.9,.2,1), opacity .28s ease;
+  opacity: 0;
+  margin-top: 10px;
+  display: block;
+}
+
+/* visible state */
+.neon-links.show {
+  opacity: 1;
+  max-height: 400px; /* cukup untuk 3-6 link */
+}
+
+/* links inside container — match menu styling */
+.neon-links a {
+  display: block;
+  padding: 10px 8px;
+  margin: 6px 0;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+  transition: background .18s, color .14s;
+}
+
+.neon-links a:hover,
+.neon-links a:focus {
+  background: linear-gradient(90deg, rgba(168,110,255,0.06), rgba(69,209,255,0.03));
+  color: var(--neon-blue);
+  outline: none;
+}
+
+/* small responsive tweak */
+@media (max-width: 520px) {
+  .neon-btn { width: 100%; justify-content: center; }
+  .neon-links a { padding-left: 12px; padding-right: 12px; }
+}
