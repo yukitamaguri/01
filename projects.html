@@ -4,7 +4,6 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Project — Mikennekogenchi</title>
-<link rel="icon" type="image/png" href="pp.png">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
@@ -169,6 +168,56 @@ section{
   .section-title{font-size:26px;}
   .project-info h3{font-size:16px;}
 }
+
+@media(min-width:1100px){
+  .projects-grid{
+    grid-template-columns: repeat(3, 1fr);
+    gap: 26px;
+  }
+
+  .project-card{
+    max-width: 380px;
+  }
+
+  .popup-content{
+    max-width: 55%;
+  }
+}
+
+
+@media (min-width: 1024px) {
+
+  /* Batasi tinggi gambar dalam card project */
+  .project-media img {
+    max-height: 350px;
+    object-fit: cover;
+  }
+
+  /* Popup image juga dibatasi agar tidak memenuhi layar */
+  .popup-content img {
+    max-height: 70vh;  /* 70% tinggi layar */
+    object-fit: contain;
+  }
+
+  /* Card tidak melebar terlalu jauh */
+  .project-card {
+    max-width: 480px;
+  }
+
+  /* Grid rapi di desktop */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
+
+
+.projects-grid {
+  grid-template-columns: 1fr !important;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
 </style>
 </head>
 <body>
@@ -197,10 +246,10 @@ section{
 
       <div class="project-card" data-img="06.png" data-title="3D model"
       data-desc="Membuat 3D model
-        mengunakan Pisma">
+        mengunakan prisma">
         <div class="project-media"><img src="06.png" alt="p"></div>
         <div class="project-info"><h3>3D model</h3><p>Membuat 3D model
-        mengunakan Prisma</p></div>
+        mengunakan prisma</p></div>
       </div>
 
       <div class="project-card" data-img="07.png" data-title="kosong"
@@ -287,4 +336,4 @@ document.addEventListener("DOMContentLoaded", ()=>{
 <script src="cursor.js"></script>
 
 </body>
-  </html>
+</html>
