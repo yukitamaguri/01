@@ -164,7 +164,34 @@ solid rgba(155,77,255,0.2);box-shadow:0 0 24px rgba(155,77,255,0.3)}
   transform: scaleX(1);
 }
 
+/* ============================
+   FIX GAMBAR AGAR TIDAK MENUTUP LAYAR (DESKTOP ONLY)
+   ============================ */
+@media (min-width: 1024px) {
 
+  /* Batasi tinggi gambar dalam card project */
+  .project-media img {
+    max-height: 350px;
+    object-fit: cover;
+  }
+
+  /* Popup image juga dibatasi agar tidak memenuhi layar */
+  .popup-content img {
+    max-height: 70vh;  /* 70% tinggi layar */
+    object-fit: contain;
+  }
+
+  /* Card tidak melebar terlalu jauh */
+  .project-card {
+    max-width: 480px;
+  }
+
+  /* Grid rapi di desktop */
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+}
 
 </style>
 <link rel="stylesheet" href="menu.css">
@@ -616,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 <link rel="stylesheet" href="cursor.css">
 <script src="cursor.js"></script>
+
 
 </body>
   </html>
